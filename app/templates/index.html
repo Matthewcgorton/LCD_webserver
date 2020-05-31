@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}LCD{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Overview</h1>
+    This is a web interface to an LCD screen on a wireless device... All part of life's learning opportunities.
+
+    <p>
+      <br />
+      <hr />
+    </p>
+
+    Actions:
+    <ol>
+      <li><a href="/lcd/msg">Get current message</a></li>
+      <li><a href="/lcd/set">Set current message</a></li>
+      <li><a href="/lcd/clear">Clear current message</a></li>
+     </ol>
+</div>
+{% endblock %}
