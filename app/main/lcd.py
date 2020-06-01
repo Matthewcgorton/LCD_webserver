@@ -73,6 +73,7 @@ def lcd_byte(bits, mode):
     # mode = 1 for data
     #        0 for command
     import smbus
+    bus = smbus.SMBus(1)
 
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
@@ -88,6 +89,7 @@ def lcd_byte(bits, mode):
 
 def lcd_toggle_enable(bits):
     import smbus
+    bus = smbus.SMBus(1)
 
     # Toggle enable
     time.sleep(E_DELAY)
