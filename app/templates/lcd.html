@@ -3,8 +3,8 @@
 {% block title %}LCD Message{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    The current message is:
+<div class="page_content">
+    <h4>The current message is:</h4>
     <pre>
       <code>
 {% if lines %}
@@ -17,5 +17,9 @@
 {% endif %}
       </code>
     </pre>
+
+  {% if not local_hardware %}
+    <h4>Warning : Running in test mode, no local hardware configured</h4>
+  {% endif %}
 </div>
 {% endblock %}

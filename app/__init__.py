@@ -10,24 +10,36 @@ bootstrap = Bootstrap()
 manager = Manager()
 
 
+# ##################################################
+# Global variables that represents the current state of the hardware
+# ##################################################
+
+lcd_state = {'msg': {'line1': "default msg line 1",
+                     'line2': "default msg line 2",
+                     'line3': "default msg line 3",
+                     'line4': "default msg line 4"
+                     },
+             'backlight': 1}
+
+
+
 def create_app(config_name):
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     app.config['SECRET_KEY'] = "asdf"
-    app.config['LCD_DISPLAY'] = {'msg': {'line1': "default msg line 1",
-                                         'line2': "default msg line 2",
-                                         'line3': "default msg line 3",
-                                         'line4': "default msg line 4"
-                                         },
-                                 'backlight': 1}
+
 
     config[config_name].init_app(app)
     bootstrap.init_app(app)
 
     from .main import main as main_blueprint
+    from .main.lcd import lcd_init
+
+    lcd_init(app.config['LOCAL_HARDWARE'])
     app.register_blueprint(main_blueprint)
 
     print("registering app from /app/__init__.py")
 
+    # main_blueprint.lcd_string("adsa", 2)
     return app
