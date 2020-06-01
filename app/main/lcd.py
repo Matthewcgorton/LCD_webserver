@@ -21,7 +21,7 @@ def lcd_test(message, line):
 bus = None
 
 I2C_ADDR = 0x27  # I2C device address
-LCD_WIDTH = 20   # Maximum characters per line
+LCD_WIDTH = 16   # Maximum characters per line
 
 # Define some device constants
 LCD_CHR = 1  # Mode - Sending data
@@ -70,7 +70,7 @@ def lcd_init( local_hardware):
 
     else:
         print(f"No local hardware\n")
-        return None
+
 
 
 def lcd_byte(bits, mode):
@@ -111,7 +111,6 @@ def lcd_toggle_enable(bits):
 def lcd_string(message, line):
     # Send string to display
     if current_app.config['LOCAL_HARDWARE']:
-
 
         message = message.ljust(LCD_WIDTH, " ")
 
