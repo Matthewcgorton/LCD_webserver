@@ -1,6 +1,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request
 # from . import lcd_state
 
+import time
 
 def lcd_string(message, line):
     # Send string to display
@@ -44,7 +45,7 @@ def lcd_init( local_hardware):
         print(f"Initializing local hardware")
 
         import smbus
-        import time
+
 
         # Open I2C interface
         # bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
@@ -71,6 +72,7 @@ def lcd_byte(bits, mode):
     # bits = the data
     # mode = 1 for data
     #        0 for command
+    import smbus
 
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
@@ -85,7 +87,7 @@ def lcd_byte(bits, mode):
 
 
 def lcd_toggle_enable(bits):
-
+    import smbus
 
     # Toggle enable
     time.sleep(E_DELAY)
