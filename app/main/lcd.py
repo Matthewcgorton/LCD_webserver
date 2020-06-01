@@ -59,41 +59,38 @@ def lcd_init( local_hardware):
         lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
         lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
         time.sleep(E_DELAY)
+        print(f"Initialize\n")
+
     else:
-            print(f"No local hardware")
+        print(f"No local hardware\n")
 
 
 def lcd_byte(bits, mode):
-    if current_app.config['LOCAL_HARDWARE']:
-        # Send byte to data pins
-        # bits = the data
-        # mode = 1 for data
-        #        0 for command
+    # Send byte to data pins
+    # bits = the data
+    # mode = 1 for data
+    #        0 for command
 
-        bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
-        bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
+    bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
+    bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
 
-        # High bits
-        bus.write_byte(I2C_ADDR, bits_high)
-        lcd_toggle_enable(bits_high)
+    # High bits
+    bus.write_byte(I2C_ADDR, bits_high)
+    lcd_toggle_enable(bits_high)
 
-        # Low bits
-        bus.write_byte(I2C_ADDR, bits_low)
-        lcd_toggle_enable(bits_low)
-    else:
-        print(f"lcd_byte({bits}, {mode})")
+    # Low bits
+    bus.write_byte(I2C_ADDR, bits_low)
+    lcd_toggle_enable(bits_low)
 
 
 def lcd_toggle_enable(bits):
     # Toggle enable
-    if current_app.config['LOCAL_HARDWARE']:
-        time.sleep(E_DELAY)
-        bus.write_byte(I2C_ADDR, (bits | ENABLE))
-        time.sleep(E_PULSE)
-        bus.write_byte(I2C_ADDR, (bits & ~ENABLE))
-        time.sleep(E_DELAY)
-    else:
-        print(f"lcd_toggle_enable({bits})")
+    time.sleep(E_DELAY)
+    bus.write_byte(I2C_ADDR, (bits | ENABLE))
+    time.sleep(E_PULSE)
+    bus.write_byte(I2C_ADDR, (bits & ~ENABLE))
+    time.sleep(E_DELAY)
+
 
 
 def lcd_string(message, line):
