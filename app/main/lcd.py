@@ -18,6 +18,8 @@ def lcd_test(message, line):
 
 # Define some device parameters
 
+bus = None
+
 I2C_ADDR = 0x27  # I2C device address
 LCD_WIDTH = 20   # Maximum characters per line
 
@@ -39,13 +41,14 @@ ENABLE = 0b00000100  # Enable bit
 E_PULSE = 0.0005
 E_DELAY = 0.0005
 
-test_bus = None
+
 
 def lcd_init( local_hardware):
     if local_hardware:
         print(f"Initializing local hardware")
 
         import smbus
+        global bus
 
 
         # Open I2C interface
@@ -63,7 +66,7 @@ def lcd_init( local_hardware):
         time.sleep(E_DELAY)
 
         print(f"Initialized\n")
-        return bus
+
 
     else:
         print(f"No local hardware\n")
@@ -77,28 +80,30 @@ def lcd_byte(bits, mode):
     #        0 for command
     # import smbus
     # bus = smbus.SMBus(1)
+    global bus
 
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
 
     # High bits
-    test_bus.write_byte(I2C_ADDR, bits_high)
+    bus.write_byte(I2C_ADDR, bits_high)
     lcd_toggle_enable(bits_high)
 
     # Low bits
-    test_bus.write_byte(I2C_ADDR, bits_low)
+    bus.write_byte(I2C_ADDR, bits_low)
     lcd_toggle_enable(bits_low)
 
 
 def lcd_toggle_enable(bits):
     # import smbus
     # bus = smbus.SMBus(1)
+    global bus
 
     # Toggle enable
     time.sleep(E_DELAY)
-    test_bus.write_byte(I2C_ADDR, (bits | ENABLE))
+    bus.write_byte(I2C_ADDR, (bits | ENABLE))
     time.sleep(E_PULSE)
-    test_bus.write_byte(I2C_ADDR, (bits & ~ENABLE))
+    bus.write_byte(I2C_ADDR, (bits & ~ENABLE))
     time.sleep(E_DELAY)
 
 
