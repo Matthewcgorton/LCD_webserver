@@ -59,7 +59,8 @@ def lcd_init( local_hardware):
         lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
         lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
         time.sleep(E_DELAY)
-        print(f"Initialize\n")
+
+        print(f"Initialized\n")
 
     else:
         print(f"No local hardware\n")
@@ -70,6 +71,8 @@ def lcd_byte(bits, mode):
     # bits = the data
     # mode = 1 for data
     #        0 for command
+    import smbus
+    import time
 
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
@@ -84,6 +87,9 @@ def lcd_byte(bits, mode):
 
 
 def lcd_toggle_enable(bits):
+    import smbus
+    import time
+
     # Toggle enable
     time.sleep(E_DELAY)
     bus.write_byte(I2C_ADDR, (bits | ENABLE))
@@ -96,6 +102,9 @@ def lcd_toggle_enable(bits):
 def lcd_string(message, line):
     # Send string to display
     if current_app.config['LOCAL_HARDWARE']:
+        import smbus
+        import time
+
         message = message.ljust(LCD_WIDTH, " ")
 
         lcd_byte(line, LCD_CMD)
