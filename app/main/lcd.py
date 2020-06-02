@@ -17,8 +17,8 @@ def lcd_test(message, line):
 
 
 # Define some device parameters
-
-bus = None
+# bus = None
+from .. import bus
 
 I2C_ADDR = 0x27  # I2C device address
 LCD_WIDTH = 16   # Maximum characters per line
@@ -82,6 +82,8 @@ def lcd_byte(bits, mode):
     # bus = smbus.SMBus(1)
     global bus
 
+    print(bus)
+
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
 
@@ -120,6 +122,7 @@ def lcd_string(message, line):
 
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
+
     else:
         print(f"- lcd_string('{message}', {line})")
 

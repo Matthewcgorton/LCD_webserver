@@ -21,6 +21,8 @@ lcd_state = {'msg': {'line1': "default msg line 1",
                      },
              'backlight': 1}
 
+bus = None  # place holder for hardware bus, if it is present
+
 
 
 def create_app(config_name):
