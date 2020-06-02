@@ -90,6 +90,7 @@ def lcd_byte(bits, mode):
     # High bits
     bus.write_byte(I2C_ADDR, bits_high)
     lcd_toggle_enable(bits_highT)
+    
 
     # Low bits
     bus.write_byte(I2C_ADDR, bits_low)
