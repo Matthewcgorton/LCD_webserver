@@ -114,6 +114,8 @@ def lcd_string(message, line):
 
         message = message.ljust(LCD_WIDTH, " ")
 
+        message = '123456789$ $ $'
+        
         lcd_byte(line, LCD_CMD)
 
         for i in range(LCD_WIDTH):
