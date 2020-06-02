@@ -89,7 +89,7 @@ def lcd_byte(bits, mode):
 
     # High bits
     bus.write_byte(I2C_ADDR, bits_high)
-    lcd_toggle_enable(bits_high)
+    lcd_toggle_enable(bits_high
 
     # Low bits
     bus.write_byte(I2C_ADDR, bits_low)
@@ -116,7 +116,7 @@ def lcd_string(message, line):
 
         message = message.ljust(LCD_WIDTH, " ")
 
-        message = '123456789-123456789-
+        message = '123456789-123456789-'
 
         lcd_byte(line, LCD_CMD)
 
