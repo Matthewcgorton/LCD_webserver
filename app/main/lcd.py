@@ -43,7 +43,7 @@ E_DELAY = 0.0005
 
 
 
-def lcd_init( local_hardware):
+def init_lcd(local_hardware):
     if local_hardware:
         print(f"Initializing local hardware")
 
@@ -57,7 +57,7 @@ def lcd_init( local_hardware):
 
 
         # Initialise display
-        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+        lcd_byte)(0x33, LCD_CMD)  # 110011 Initialise
         lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
         lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
         lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off

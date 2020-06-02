@@ -36,9 +36,12 @@ def create_app(config_name):
     bootstrap.init_app(app)
 
     from .main import main as main_blueprint
-    from .main.lcd import lcd_init
+    from .main.lcd import init_icd
 
-    lcd_init(app.config['LOCAL_HARDWARE'])
+
+    init_lcd(app.config['LOCAL_HARDWARE'])
+
+
     app.register_blueprint(main_blueprint)
 
     print("registering app from /app/__init__.py")
