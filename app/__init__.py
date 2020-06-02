@@ -21,6 +21,7 @@ lcd_state = {'msg': {'line1': "default msg line 1",
                      },
              'backlight': 1}
 
+lcd_initialized = False
 bus = None  # place holder for hardware bus, if it is present
 
 
@@ -38,7 +39,7 @@ def create_app(config_name):
     from .main import main as main_blueprint
     from .main.lcd import init_lcd
 
-    init_lcd(app.config['LOCAL_HARDWARE'])
+    lcd_initialized = init_lcd(app.config['LOCAL_HARDWARE'])
 
     app.register_blueprint(main_blueprint)
 

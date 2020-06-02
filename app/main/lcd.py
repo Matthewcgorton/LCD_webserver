@@ -42,31 +42,33 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 
-
-def init_lcd(local_hardware):
+def init_icd(local_hardware):
     if local_hardware:
         print(f"Initializing local hardware")
 
-        import smbus
-        global bus
+        global bus, lcd_initialized
+
+        if not lcd_initialized:
+            import smbus
 
 
-        # Open I2C interface
-        # bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
-        bus = smbus.SMBus(1)    # Rev 2 Pi uses 1
+            # Open I2C interface
+            # bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
+            bus = smbus.SMBus(1)    # Rev 2 Pi uses 1
 
 
-        # Initialise display
-        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-        lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
-        lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
-        lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-        lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
-        lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
-        time.sleep(E_DELAY)
+            # Initialise display
+            lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+            lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+            lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+            lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+            lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+            lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+            time.sleep(E_DELAY)
 
-        print(f"Initialized\n")
-
+            print(f"Initialized\n")
+            
+            return True
 
     else:
         print(f"No local hardware\n")
@@ -90,7 +92,7 @@ def lcd_byte(bits, mode):
     # High bits
     bus.write_byte(I2C_ADDR, bits_high)
     lcd_toggle_enable(bits_highT)
-    
+
 
     # Low bits
     bus.write_byte(I2C_ADDR, bits_low)
