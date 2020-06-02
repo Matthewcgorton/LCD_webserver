@@ -36,11 +36,9 @@ def create_app(config_name):
     bootstrap.init_app(app)
 
     from .main import main as main_blueprint
-    from .main.lcd import init_icd
-
+    from .main.lcd import init_lcd
 
     init_lcd(app.config['LOCAL_HARDWARE'])
-
 
     app.register_blueprint(main_blueprint)
 
