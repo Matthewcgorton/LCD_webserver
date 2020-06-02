@@ -3,22 +3,11 @@ from flask import render_template, session, redirect, url_for, current_app, requ
 
 import time
 
-def lcd_string(message, line):
-    # Send string to display
-    print("sdaf")
-
-
-def lcd_test(message, line):
-    if current_app.config['LOCAL_HARDWARE']:
-        print(f"local {message}::{line}")
-    else:
-        print(f"Test mode - No local hardware {message}::{line}")
-
 
 
 # Define some device parameters
 # bus = None
-from .. import bus
+from .. import bus, lcd_initialized
 
 I2C_ADDR = 0x27  # I2C device address
 LCD_WIDTH = 16   # Maximum characters per line
@@ -42,7 +31,7 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 
-def init_icd(local_hardware):
+def init_lcd(local_hardware):
     if local_hardware:
         print(f"Initializing local hardware")
 
@@ -84,14 +73,14 @@ def lcd_byte(bits, mode):
     # bus = smbus.SMBus(1)
     global bus
 
-    print(bus)
+    # print(bus)
 
     bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
     bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
 
     # High bits
     bus.write_byte(I2C_ADDR, bits_high)
-    lcd_toggle_enable(bits_highT)
+    lcd_toggle_enable(bits_high)
 
 
     # Low bits
@@ -117,9 +106,9 @@ def lcd_string(message, line):
     # Send string to display
     if current_app.config['LOCAL_HARDWARE']:
 
+        message = '123456789-123456789-'
         message = message.ljust(LCD_WIDTH, " ")
 
-        message = '123456789-123456789-'
 
         lcd_byte(line, LCD_CMD)
 

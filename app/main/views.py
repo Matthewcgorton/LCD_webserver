@@ -5,7 +5,7 @@ from .forms import lcd_set_form
 
 from .. import lcd_state
 
-from .lcd import lcd_test, lcd_string
+from .lcd_hardware import lcd_string
 
 
 @main.route('/')
@@ -25,7 +25,7 @@ def lcd_clear_message():
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
 
     lcd_string(lcd_state['msg']['line1'], 1)
-    lcd_string(lcd_state['msg']['line2'], 2)
+    lcd_string(lcd_state['msg']['line2d'], 2)
     lcd_string(lcd_state['msg']['line3'], 3)
     lcd_string(lcd_state['msg']['line4'], 4)
 
