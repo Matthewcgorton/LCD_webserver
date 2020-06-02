@@ -57,7 +57,7 @@ def init_lcd(local_hardware):
 
 
         # Initialise display
-        lcd_byte)(0x33, LCD_CMD)  # 110011 Initialise
+        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
         lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
         lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
         lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
@@ -116,7 +116,7 @@ def lcd_string(message, line):
 
         message = message.ljust(LCD_WIDTH, " ")
 
-        message = '123456789-123456789-'
+        message = '123456789-123456789-
 
         lcd_byte(line, LCD_CMD)
 
