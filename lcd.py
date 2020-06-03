@@ -26,10 +26,10 @@ def process_thread(inbound_queue):
         msg = inbound_queue.get()
         print(f"Thread - processing message: {msg}")
 
-        lcd_string("test 1", 1)
-        lcd_string("test 2", 2)
-        lcd_string("test 3", 3)
-        lcd_string("test 4", 4)
+        lcd_string("Test 1", 1)
+        lcd_string("Test 2", 2)
+        lcd_string("Test 3", 3)
+        lcd_string("TEST 4", 4)
 
         logging.info(f"Thread - processing message: {msg}")
 
