@@ -57,7 +57,7 @@ def make_shell_context():
 logging.info("finished startup")
 
 
-print(f"os.getenv('LOCAL_HARDWARE)') {os.getenv('LOCAL_HARDWARE)')}")
+logging.info(f"os.getenv('LOCAL_HARDWARE)') {os.getenv('LOCAL_HARDWARE)')}")
 if os.getenv('LOCAL_HARDWARE)'):
 
     logging.info("Enabling Local hardware")
