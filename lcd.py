@@ -124,7 +124,7 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         # message = '123456789-123456789-'
         message = message.ljust(LCD_WIDTH, " ")
 
-       logging.info(f"Updating LCD line '{line}' with text '{message}'")
+        logging.info(f"Updating LCD line '{line}' with text '{message}'")
 
         lcd_byte(line, LCD_CMD)
 
