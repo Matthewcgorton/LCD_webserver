@@ -23,7 +23,7 @@ def post_msg_to_queue(msg):
 
 @main.route('/')
 def index():
-    post_msg_to_queue({'action': "None"})
+    post_msg_to_queue({'action': "test"})
     return render_template('index.html')
 
 

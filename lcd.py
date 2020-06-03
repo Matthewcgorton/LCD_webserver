@@ -26,6 +26,11 @@ def process_thread(inbound_queue):
         msg = inbound_queue.get()
         print(f"Thread - processing message: {msg}")
 
+        lcd_string("test 1")
+        lcd_string("test 2")
+        lcd_string("test 3")
+        lcd_string("test 4")
+
         logging.info(f"Thread - processing message: {msg}")
 
     logging.info("Thread %s: finishing", "processor")
@@ -133,7 +138,7 @@ if os.getenv('LOCAL_HARDWARE)'):
     def lcd_string(message, line):
         # Send string to display
 
-        message = '123456789-123456789-'
+        # message = '123456789-123456789-'
         message = message.ljust(LCD_WIDTH, " ")
 
         lcd_byte(line, LCD_CMD)
