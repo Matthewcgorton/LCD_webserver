@@ -121,16 +121,13 @@ if os.getenv('LOCAL_HARDWARE') == "1":
     def lcd_string(message, line):
         # Send string to display
 
-        # message = '123456789-123456789-'
         message = message.ljust(LCD_WIDTH, " ")
-
         logging.info(f"Updating LCD line '{line}' with text '{message}'")
-        # print(f"Updating LCD line '{line}' with text '{message}'")
 
         lcd_byte(line, LCD_CMD)
-
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
+            print(f" ch: '{message[i]}' ord: {ord(message[i)}')
             time.sleep(E_DELAY)
 
     # Initialise display
