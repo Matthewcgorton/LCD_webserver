@@ -4,6 +4,10 @@ from flask import Flask, render_template, current_app
 from flask_bootstrap import Bootstrap
 from flask_script import Manager
 
+import queue
+
+# from .lcd.py import task_queue
+
 from config import config
 
 bootstrap = Bootstrap()
@@ -23,10 +27,14 @@ lcd_state = {'msg': {'line1': "default msg line 1",
 
 lcd_initialized = False
 bus = None  # place holder for hardware bus, if it is present
+# task_queue = "this has not been set"
 
 
 
-def create_app(config_name):
+def create_app(config_name, outbound_queue):
+    global task_queue
+
+    task_queue = outbound_queue
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -38,6 +46,7 @@ def create_app(config_name):
 
     from .main import main as main_blueprint
     from .main.lcd_hardware import init_lcd
+
 
     lcd_initialized = init_lcd(app.config['LOCAL_HARDWARE'])
 

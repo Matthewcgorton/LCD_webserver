@@ -3,19 +3,32 @@ from flask import render_template, session, redirect, url_for, current_app, requ
 from . import main
 from .forms import lcd_set_form
 
-from .. import lcd_state
+import logging
 
+format = "%(asctime)s: %(message)s"
+logging.basicConfig(format=format, level=logging.INFO,
+                    datefmt="%H:%M:%S")
+
+
+from .. import lcd_state, task_queue
 from .lcd_hardware import lcd_string
+
+
+def post_msg_to_queue(msg):
+    global task_queue
+
+    logging.info(f"View - posting message: {msg}")
+    task_queue.put(msg)
 
 
 @main.route('/')
 def index():
+    post_msg_to_queue({'action': "None"})
     return render_template('index.html')
 
 
 @main.route('/lcd/msg')
 def lcd_message():
-
     return render_template('lcd.html', lines=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
 
 
@@ -25,9 +38,11 @@ def lcd_clear_message():
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
 
     lcd_string(lcd_state['msg']['line1'], 1)
-    lcd_string(lcd_state['msg']['line2d'], 2)
+    lcd_string(lcd_state['msg']['line2'], 2)
     lcd_string(lcd_state['msg']['line3'], 3)
     lcd_string(lcd_state['msg']['line4'], 4)
+
+    post_msg_to_queue({'action': "redisplay"})
 
     return render_template('lcd.html', msg=lcd_state['msg'])
 
@@ -36,10 +51,6 @@ def lcd_clear_message():
 def lcd_set_message():
 
     form = lcd_set_form(request.form)
-
-    # app.logger.debug('A value for debugging')
-    # app.logger.warning('A warning occurred (%d apples)', 42)
-    # app.logger.error('An error occurred')
 
     print(f"Request Methon: {request.method}")
     if request.method == 'POST':
@@ -56,6 +67,8 @@ def lcd_set_message():
             lcd_string(lcd_state['msg']['line2'], 2)
             lcd_string(lcd_state['msg']['line3'], 3)
             lcd_string(lcd_state['msg']['line4'], 4)
+
+            post_msg_to_queue({'action': "redisplay"})
 
             print("redirecting to GET display resource...")
             return redirect(url_for('main.lcd_message'))
