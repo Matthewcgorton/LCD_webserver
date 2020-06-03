@@ -130,6 +130,7 @@ if os.getenv('LOCAL_HARDWARE') == "1":
 
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
+            time.sleep(E_DELAY)
 
     # Initialise display
     print("Initializing local hardware")
