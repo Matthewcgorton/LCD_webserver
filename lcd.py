@@ -127,7 +127,7 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         lcd_byte(line, LCD_CMD)
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
-            print(f" ch: '{message[i]}' ord: {ord(message[i)}')
+            print(f" ch: '{message[i]}' ord: '{ord(message[i])}'")
             time.sleep(E_DELAY)
 
     # Initialise display
