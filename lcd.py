@@ -53,6 +53,7 @@ app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
 def make_shell_context():
     return dict(db=db, User=User, Role=Role)
 
+
 logging.info("finished startup")
 
 
@@ -87,30 +88,11 @@ if os.getenv('LOCAL_HARDWARE)'):
     # bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
     bus = smbus.SMBus(1)    # Rev 2 Pi uses 1
 
-    def init_lcd():
-        print("Initializing local hardware")
-
-        # Initialise display
-        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-        lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
-        lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
-        lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-        lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
-        lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
-        time.sleep(E_DELAY)
-
-        print("Initialized\n")
-
     def lcd_byte(bits, mode):
         # Send byte to data pins
         # bits = the data
         # mode = 1 for data
         #        0 for command
-        # import smbus
-        # bus = smbus.SMBus(1)
-        # global bus
-
-        # print(bus)
 
         bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
         bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
@@ -145,6 +127,19 @@ if os.getenv('LOCAL_HARDWARE)'):
 
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
+
+        # Initialise display
+        print("Initializing local hardware")
+
+        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+        lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+        lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+        lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+        lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+        lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+        time.sleep(E_DELAY)
+
+        print("Initialized\n")
 
 else:
     def init_lcd():
