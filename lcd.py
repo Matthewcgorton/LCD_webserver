@@ -128,20 +128,23 @@ if os.getenv('LOCAL_HARDWARE)'):
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
 
-        # Initialise display
-        print("Initializing local hardware")
+    # Initialise display
+    print("Initializing local hardware")
 
-        lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-        lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
-        lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
-        lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-        lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
-        lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
-        time.sleep(E_DELAY)
+    lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+    lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+    lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+    lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+    lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+    lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+    time.sleep(E_DELAY)
 
-        print("Initialized\n")
+    print("Initialized\n")
 
 else:
+    logging.info("No Local hardware :: creating NOP functions")
+
+
     def init_lcd():
         logging.info("NOP :: Enabling Local hardware")
 
