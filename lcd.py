@@ -5,7 +5,7 @@ import logging
 import threading
 from queue import Queue
 
-from app import create_app
+from app import create_app, lcd_state
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
@@ -22,14 +22,31 @@ def get_ip_address():
 def process_thread(inbound_queue):
     logging.info("listening to task queue")
 
+lcd_state = {'msg': {'line1': "default msg line 1",
+                     'line2': "default msg line 2",
+                     'line3': "default msg line 3",
+                     'line4': "default msg line 4"
+                     },
+             'backlight': 1}
+
     while True:
         msg = inbound_queue.get()
         print(f"Thread - processing message: {msg}")
 
-        lcd_string("Test 1", 1)
-        lcd_string("Test 2", 2)
-        lcd_string("Test 3", 3)
-        lcd_string("TEST 4", 4)
+        lcd_string(lcd_state['msg']['line1'], 1)
+        lcd_string(lcd_state['msg']['line2'], 2)
+        lcd_string(lcd_state['msg']['line3'], 3)
+        lcd_string(lcd_state['msg']['line4'], 4)
+
+        logging.info(f"Line1: '{lcd_state['msg']['line1']}'")
+        logging.info(f"Line1: '{lcd_state['msg']['line2']}'")
+        logging.info(f"Line1: '{lcd_state['msg']['line3']}'")
+        logging.info(f"Line1: '{lcd_state['msg']['line4']}'")
+
+        # lcd_string("Test 1", 1)
+        # lcd_string("Test 2", 2)
+        # lcd_string("Test 3", 3)
+        # lcd_string("TEST 4", 4)
 
         logging.info(f"Thread - processing message: {msg}")
 
