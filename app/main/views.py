@@ -9,9 +9,8 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-
-from .. import lcd_state, task_queue
-# from .lcd_hardware import lcd_string
+# from .. import lcd_state, task_queue
+from .. import lcd_state
 
 
 def post_msg_to_queue(msg):
@@ -37,14 +36,9 @@ def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
 
-    # lcd_string(lcd_state['msg']['line1'], 1)
-    # lcd_string(lcd_state['msg']['line2'], 2)
-    # lcd_string(lcd_state['msg']['line3'], 3)
-    # lcd_string(lcd_state['msg']['line4'], 4)
-
     post_msg_to_queue({'action': "redisplay"})
 
-    return render_template('lcd.html', msg=lcd_state['msg'])
+    return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
 
 
 @main.route('/lcd/set', methods=['GET', 'POST'])
@@ -73,7 +67,7 @@ def lcd_set_message():
             print("redirecting to GET display resource...")
             return redirect(url_for('main.lcd_message'))
         else:
-            return render_template('lcd_set.html', form=form)
+            return render_template('lcd_set.html', form=form, local_hardware=current_app.config['LOCAL_HARDWARE'])
 
     else:  # was a GET message
         form = lcd_set_form()
