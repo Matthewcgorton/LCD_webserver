@@ -83,8 +83,10 @@ if os.getenv('LOCAL_HARDWARE') == "1":
     ENABLE = 0b00000100  # Enable bit
 
     # Timing constants
-    E_PULSE = 0.0005
-    E_DELAY = 0.0005
+    # E_PULSE = 0.0005
+    # E_DELAY = 0.0005
+    E_PULSE = 0.002
+    E_DELAY = 0.002
 
     import smbus
     # Open I2C interface
@@ -125,7 +127,7 @@ if os.getenv('LOCAL_HARDWARE') == "1":
 
         message = message.ljust(LCD_WIDTH, " ")
         logging.info(f"Updating LCD line '{line} {type(line)}' with text '{message}'")
-        
+
         lcd_byte(line, LCD_CMD)
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
