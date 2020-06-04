@@ -193,8 +193,7 @@ task_queue.put({'action': 'display',
                )
 
 task_queue.put({'action': 'display',
-                'data': {'msg': '#### TEST ####
-                ',
+                'data': {'msg': '#### TEST ####',
                          'line': 2}}
                )
 
