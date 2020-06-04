@@ -164,7 +164,7 @@ def process_thread(inbound_queue):
             # lcd_string(lcd_state['msg']['line1'], 1)
             # lcd_string(lcd_state['msg']['line2'], 2)
             # lcd_string(lcd_state['msg']['line3'], 3)
-            lcd_string("123456789-abcdefghij", 3)
+            lcd_string("123456789-abcdefghij", 4)
             # lcd_string(lcd_state['msg']['line4'], 4)
 
             # logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
