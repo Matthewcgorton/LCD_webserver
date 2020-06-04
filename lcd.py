@@ -167,19 +167,19 @@ def process_thread(inbound_queue):
         if action == 'test':
             print("test was called")
 
-        if action == 'unknown':
+        if action == 'redisplay':
             print(f"Action: '{action}' msg: '{msg}'")
 
-            # lcd_string(lcd_state['msg']['line1'], 1)
-            # lcd_string(lcd_state['msg']['line2'], 2)
-            # lcd_string(lcd_state['msg']['line3'], 3)
-            lcd_string("123456789-abcdefghij", 4)
-            # lcd_string(lcd_state['msg']['line4'], 4)
+            lcd_string(lcd_state['msg']['line1'], 1)
+            lcd_string(lcd_state['msg']['line2'], 2)
+            lcd_string(lcd_state['msg']['line3'], 3)
+            # lcd_string("123456789-abcdefghij", 4)
+            lcd_string(lcd_state['msg']['line4'], 4)
 
-            # logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
-            # logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
-            # logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
-            # logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
+            logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
+            logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
+            logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
+            logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
 
             # lcd_string("Test 1", 1)
             # lcd_string("Test 2", 2)
