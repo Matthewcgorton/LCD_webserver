@@ -117,7 +117,6 @@ E_PULSE = 0.002
 E_DELAY = 0.002
 
 
-
 # define the hardware thread
 def process_thread(inbound_queue):
     logging.info("listening to task queue")
@@ -128,7 +127,7 @@ def process_thread(inbound_queue):
 
         action = task.get('action', 'unknown')
 
-        print(f"Action: '{action}'")
+        print(f"Task action: '{action}'")
 
         if action == 'Initialise':
             # Initialise display
@@ -152,7 +151,7 @@ def process_thread(inbound_queue):
             lcd_string(msg, line)
 
         if action == 'quit':
-            print(action)
+            print("Threas was asked to quit")
             break
 
         if action == 'test':
@@ -194,7 +193,7 @@ task_queue.put({'action': 'display',
                )
 
 task_queue.put({'action': 'display',
-                'data': {'msg': '123456789-abcdefghij',
+                'data': {'msg': '#### TEST ####',
                          'line': 1}}
                )
 
