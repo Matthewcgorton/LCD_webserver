@@ -30,8 +30,8 @@ def process_thread(inbound_queue):
 
         print(f"Action: '{action}' msg: '{msg}'")
 
-        lcd_string(lcd_state['msg']['line1'], 1)
-        # lcd_string(lcd_state['msg']['line2'], 2)
+        # lcd_string(lcd_state['msg']['line1'], 1)
+        lcd_string(lcd_state['msg']['line2'], 2)
         # lcd_string(lcd_state['msg']['line3'], 3)
         # lcd_string(lcd_state['msg']['line4'], 4)
 
