@@ -5,7 +5,7 @@ import logging
 import threading
 from queue import Queue
 
-from app import create_app, lcd_state
+# from app import create_app, lcd_state
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
