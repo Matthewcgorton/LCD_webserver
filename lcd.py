@@ -124,8 +124,8 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         # Send string to display
 
         message = message.ljust(LCD_WIDTH, " ")
-        logging.info(f"Updating LCD line '{line}' with text '{message}'")
-
+        logging.info(f"Updating LCD line '{line} {type(line)}' with text '{message}'")
+        
         lcd_byte(line, LCD_CMD)
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
