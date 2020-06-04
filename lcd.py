@@ -28,17 +28,17 @@ def process_thread(inbound_queue):
 
         action = msg.get('action', 'unknown')
 
-        print(f"Action: {action} msg: {msg}")
-        
+        print(f"Action: '{action}' msg: '{msg}'")
+
         lcd_string(lcd_state['msg']['line1'], 1)
         lcd_string(lcd_state['msg']['line2'], 2)
         lcd_string(lcd_state['msg']['line3'], 3)
         lcd_string(lcd_state['msg']['line4'], 4)
 
-        logging.info(f"Line1: '{lcd_state['msg']['line1']}'")
-        logging.info(f"Line1: '{lcd_state['msg']['line2']}'")
-        logging.info(f"Line1: '{lcd_state['msg']['line3']}'")
-        logging.info(f"Line1: '{lcd_state['msg']['line4']}'")
+        logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
+        logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
+        logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
+        logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
 
         # lcd_string("Test 1", 1)
         # lcd_string("Test 2", 2)
@@ -129,7 +129,7 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         lcd_byte(line, LCD_CMD)
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
-            print(f" ch: '{message[i]}' ord: '{ord(message[i])}'")
+            # print(f" ch: '{message[i]}' ord: '{ord(message[i])}'")
             time.sleep(E_DELAY)
 
     # Initialise display
