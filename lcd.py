@@ -5,7 +5,7 @@ import logging
 import threading
 from queue import Queue
 
-# from app import create_app, lcd_state
+from app import create_app, lcd_state
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
@@ -193,23 +193,22 @@ def process_thread(inbound_queue):
 
 logging.info("Creating thread")
 
+
 x = threading.Thread(target=process_thread, args=(task_queue,))
 x.start()
 
-task_queue.put({'action': 'Initialise'})
-task_queue.put({'action': 'display',
-                'data': {'msg': '123456789-abcdefghij',
-                         'line': 1}}
-               )
-
-task_queue.put({'action': 'display',
-                'data': {'msg': '#### TEST ####',
-                         'line': 2}}
-               )
-
-task_queue.put({'action': 'quit'})
-
-exit()
+# task_queue.put({'action': 'Initialise'})
+# task_queue.put({'action': 'display',
+#                 'data': {'msg': '123456789-abcdefghij',
+#                          'line': 1}}
+#                )
+#
+# task_queue.put({'action': 'display',
+#                 'data': {'msg': '#### TEST ####',
+#                          'line': 2}}
+#                )
+#
+# task_queue.put({'action': 'quit'})
 
 
 logging.info("running the app")
