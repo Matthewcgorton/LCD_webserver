@@ -18,17 +18,15 @@ manager = Manager()
 # Global variables that represents the current state of the hardware
 # ##################################################
 
-lcd_state = {'msg': {'line1': "default msg line 1",
-                     'line2': "default msg line 2",
-                     'line3': "default msg line 3",
-                     'line4': "default msg line 4"
+lcd_state = {'msg': {'line1': "1 default msg line 1",
+                     'line2': "2 default msg line 2",
+                     'line3': "3 default msg line 3",
+                     'line4': "4 default msg line 4"
                      },
              'backlight': 1}
 
 lcd_initialized = False
 bus = None  # place holder for hardware bus, if it is present
-# task_queue = "this has not been set"
-
 
 
 def create_app(config_name, outbound_queue):
