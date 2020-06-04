@@ -44,18 +44,6 @@ logging.info("Creating thread")
 x = threading.Thread(target=process_thread, args=(task_queue,))
 x.start()
 
-logging.info("running the app")
-app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
-
-
-# app.run()
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
-
-
-logging.info("finished startup")
-
 
 logging.info(f"os.getenv('LOCAL_HARDWARE') {os.getenv('LOCAL_HARDWARE')}")
 if os.getenv('LOCAL_HARDWARE') == "1":
@@ -158,3 +146,18 @@ else:
 
     def lcd_string(message, line):
         logging.info("NOP :: write string")
+
+
+
+
+logging.info("running the app")
+app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
+
+
+# app.run()
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Role=Role)
+
+
+logging.info("finished startup")
