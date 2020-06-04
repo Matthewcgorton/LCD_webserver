@@ -22,17 +22,14 @@ def get_ip_address():
 def process_thread(inbound_queue):
     logging.info("listening to task queue")
 
-    lcd_state = {'msg': {'line1': "default msg line 1",
-                         'line2': "default msg line 2",
-                         'line3': "default msg line 3",
-                         'line4': "default msg line 4"
-                         },
-                 'backlight': 1}
-
     while True:
         msg = inbound_queue.get()
         print(f"Thread - processing message: {msg}")
 
+        action = msg.get('action', 'unknown')
+
+        print(f"Action: {action} msg: {msg}")
+        
         lcd_string(lcd_state['msg']['line1'], 1)
         lcd_string(lcd_state['msg']['line2'], 2)
         lcd_string(lcd_state['msg']['line3'], 3)
@@ -164,10 +161,9 @@ else:
         logging.info("NOP :: write string")
 
 
-task_queue.put("########## ######## 1")
-task_queue.put("########## ######## 2")
-task_queue.put("########## ######## 3")
-task_queue.put("########## ######## 4")
+task_queue.put({'action': 'test'})
+
+exit()
 
 logging.info("running the app")
 app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
