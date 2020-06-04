@@ -46,11 +46,8 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         lcd_toggle_enable(bits_low)
 
     def lcd_toggle_enable(bits):
-        # import smbus
-        # bus = smbus.SMBus(1)
-        # global bus
-
         # Toggle enable
+
         time.sleep(E_DELAY)
         bus.write_byte(I2C_ADDR, (bits | ENABLE))
         time.sleep(E_PULSE)
@@ -61,9 +58,22 @@ if os.getenv('LOCAL_HARDWARE') == "1":
         # Send string to display
 
         message = message.ljust(LCD_WIDTH, " ")
-        logging.info(f"Updating LCD line '{line} {type(line)}' with text '{message}'")
 
-        lcd_byte(line, LCD_CMD)
+        if line == 1:
+            line_address = LCD_LINE_1
+
+        if line == 2:
+            line_address = LCD_LINE_2
+
+        if line == 3:
+            line_address = LCD_LINE_3
+
+        if line == 4:
+            line_address = LCD_LINE_4
+
+        logging.info(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
+
+        lcd_byte(line_address, LCD_CMD)
         for i in range(LCD_WIDTH):
             lcd_byte(ord(message[i]), LCD_CHR)
             # print(f" ch: '{message[i]}' ord: '{ord(message[i])}'")
