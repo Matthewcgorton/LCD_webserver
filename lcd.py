@@ -134,7 +134,6 @@ if os.getenv('LOCAL_HARDWARE') == "1":
 else:
     logging.info("No Local hardware :: creating NOP functions")
 
-
     def init_lcd():
         logging.info("NOP :: Enabling Local hardware")
 
@@ -148,7 +147,10 @@ else:
         logging.info("NOP :: write string")
 
 
-
+task_queue.put("########## ######## 1")
+task_queue.put("########## ######## 2")
+task_queue.put("########## ######## 3")
+task_queue.put("########## ######## 4")
 
 logging.info("running the app")
 app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
