@@ -22,12 +22,12 @@ def get_ip_address():
 def process_thread(inbound_queue):
     logging.info("listening to task queue")
 
-lcd_state = {'msg': {'line1': "default msg line 1",
-                     'line2': "default msg line 2",
-                     'line3': "default msg line 3",
-                     'line4': "default msg line 4"
-                     },
-             'backlight': 1}
+    lcd_state = {'msg': {'line1': "default msg line 1",
+                         'line2': "default msg line 2",
+                         'line3': "default msg line 3",
+                         'line4': "default msg line 4"
+                         },
+                 'backlight': 1}
 
     while True:
         msg = inbound_queue.get()
