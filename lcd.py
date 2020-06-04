@@ -190,7 +190,7 @@ x.start()
 task_queue.put({'action': 'Initialise'})
 task_queue.put({'action': 'display',
                 'data': {'msg': '123456789-abcdefghij',
-                         'line': 3}}
+                         'line': 4}}
                )
 
 task_queue.put({'action': 'display',
