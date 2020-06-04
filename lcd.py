@@ -18,76 +18,10 @@ def get_ip_address():
     return s.getsockname()[0]
 
 
-# define the hardware thread
-def process_thread(inbound_queue):
-    logging.info("listening to task queue")
-
-    while True:
-        msg = inbound_queue.get()
-        print(f"Thread - processing message: {msg}")
-
-        action = msg.get('action', 'unknown')
-
-        print(f"Action: '{action}' msg: '{msg}'")
-
-        # lcd_string(lcd_state['msg']['line1'], 1)
-        # lcd_string(lcd_state['msg']['line2'], 2)
-        # lcd_string(lcd_state['msg']['line3'], 3)
-        lcd_string("123456789-abcdefghij", 3)
-        # lcd_string(lcd_state['msg']['line4'], 4)
-
-        logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
-        logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
-        logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
-        logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
-
-        # lcd_string("Test 1", 1)
-        # lcd_string("Test 2", 2)
-        # lcd_string("Test 3", 3)
-        # lcd_string("TEST 4", 4)
-
-        logging.info(f"Thread - processing message: {msg}")
-
-    logging.info("Thread %s: finishing", "processor")
-
-
-# Create the shared queue and launch process_thread
-task_queue = Queue()
-
-logging.info("Creating thread")
-
-x = threading.Thread(target=process_thread, args=(task_queue,))
-x.start()
-
-
 logging.info(f"os.getenv('LOCAL_HARDWARE') {os.getenv('LOCAL_HARDWARE')}")
 if os.getenv('LOCAL_HARDWARE') == "1":
 
     logging.info("Enabling Local hardware")
-
-    # Define some device parameters
-    I2C_ADDR = 0x27  # I2C device address
-    LCD_WIDTH = 20   # Maximum characters per line
-
-    # Define some device constants
-    LCD_CHR = 1  # Mode - Sending data
-    LCD_CMD = 0  # Mode - Sending command
-
-    LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
-    LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
-    LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
-    LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
-
-    LCD_BACKLIGHT = 0x08  # On
-    # LCD_BACKLIGHT = 0x00  # Off
-
-    ENABLE = 0b00000100  # Enable bit
-
-    # Timing constants
-    # E_PULSE = 0.0005
-    # E_DELAY = 0.0005
-    E_PULSE = 0.002
-    E_DELAY = 0.002
 
     import smbus
     # Open I2C interface
@@ -135,38 +69,139 @@ if os.getenv('LOCAL_HARDWARE') == "1":
             # print(f" ch: '{message[i]}' ord: '{ord(message[i])}'")
             time.sleep(E_DELAY)
 
-    # Initialise display
-    print("Initializing local hardware")
-
-    lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-    lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
-    lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
-    lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-    lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
-    lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
-    time.sleep(E_DELAY)
-
-    print("Initialized\n")
-
 else:
     logging.info("No Local hardware :: creating NOP functions")
 
     def init_lcd():
-        logging.info("NOP :: Enabling Local hardware")
+        logging.info(f"NOP :: Enabling Local hardware")
 
     def lcd_byte(bits, mode):
-        logging.info("NOP :: write byte")
+        logging.info(f"NOP :: write byte {bits}, {mode}")
 
     def lcd_toggle_enable(bits):
-        logging.info("NOP :: toggle bits")
+        logging.info(f"NOP :: toggle bits {bits}")
 
     def lcd_string(message, line):
-        logging.info("NOP :: write string")
+        logging.info(f"NOP :: write string '{message}' at line {line}")
 
+
+# Create the shared queue and launch process_thread
+task_queue = Queue()
 
 task_queue.put({'action': 'test'})
 
+
+
+# Define some device parameters
+I2C_ADDR = 0x27  # I2C device address
+LCD_WIDTH = 20   # Maximum characters per line
+
+# Define some device constants
+LCD_CHR = 1  # Mode - Sending data
+LCD_CMD = 0  # Mode - Sending command
+
+LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
+LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
+LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
+LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
+
+LCD_BACKLIGHT = 0x08  # On
+# LCD_BACKLIGHT = 0x00  # Off
+
+ENABLE = 0b00000100  # Enable bit
+
+# Timing constants
+# E_PULSE = 0.0005
+# E_DELAY = 0.0005
+E_PULSE = 0.002
+E_DELAY = 0.002
+
+
+
+# define the hardware thread
+def process_thread(inbound_queue):
+    logging.info("listening to task queue")
+
+    while True:
+        task = inbound_queue.get()
+        print(f"Thread - processing message: {task}")
+
+        action = task.get('action', 'unknown')
+
+        print(f"Action: '{action}'")
+
+        if action == 'Initialise':
+            # Initialise display
+            print("Initializing local hardware")
+
+            lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+            lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+            lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+            lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+            lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+            lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+            time.sleep(E_DELAY)
+
+            print("Initialized\n")
+
+        if action == 'display':
+            data = task.get('data', {'msg': '', 'line': 0})
+            msg = data.get('msg', '')
+            line = data.get('line', 0)
+
+            lcd_string(msg, line)
+
+        if action == 'quit':
+            print(action)
+            break
+
+        if action == 'test':
+            print("test was called")
+
+        if action == 'unknown':
+            print(f"Action: '{action}' msg: '{msg}'")
+
+            # lcd_string(lcd_state['msg']['line1'], 1)
+            # lcd_string(lcd_state['msg']['line2'], 2)
+            # lcd_string(lcd_state['msg']['line3'], 3)
+            lcd_string("123456789-abcdefghij", 3)
+            # lcd_string(lcd_state['msg']['line4'], 4)
+
+            # logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
+            # logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
+            # logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
+            # logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
+
+            # lcd_string("Test 1", 1)
+            # lcd_string("Test 2", 2)
+            # lcd_string("Test 3", 3)
+            # lcd_string("TEST 4", 4)
+
+        logging.info("Thread - message processed\n\n")
+
+    logging.info("Thread %s: finishing", "processor")
+
+
+logging.info("Creating thread")
+
+x = threading.Thread(target=process_thread, args=(task_queue,))
+x.start()
+
+task_queue.put({'action': 'Initialise'})
+task_queue.put({'action': 'display',
+                'data': {'msg': '123456789-abcdefghij',
+                         'line': 3}}
+               )
+
+task_queue.put({'action': 'display',
+                'data': {'msg': '123456789-abcdefghij',
+                         'line': 1}}
+               )
+
+task_queue.put({'action': 'quit'})
+
 exit()
+
 
 logging.info("running the app")
 app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
