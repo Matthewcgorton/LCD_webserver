@@ -3,7 +3,7 @@ from flask import render_template, session, redirect, url_for, current_app, requ
 
 import time
 
-
+FAIL
 
 # Define some device parameters
 # bus = None
@@ -56,7 +56,7 @@ def init_lcd(local_hardware):
             time.sleep(E_DELAY)
 
             print(f"Initialized\n")
-            
+
             return True
 
     else:
@@ -109,7 +109,6 @@ def lcd_string(message, line):
         message = '123456789-123456789-'
         message = message.ljust(LCD_WIDTH, " ")
 
-
         lcd_byte(line, LCD_CMD)
 
         for i in range(LCD_WIDTH):
@@ -117,17 +116,3 @@ def lcd_string(message, line):
 
     else:
         print(f"- lcd_string('{message}', {line})")
-
-
-# def get_ip_address():
-#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#     s.connect(("8.8.8.8", 80))
-#     return s.getsockname()[0]
-#
-#
-# lcd = {'msg': ["default msg line 1",
-#                "default msg line 2",
-#                "default msg line 3",
-#                "default msg line 4"
-#                ],
-#        'backlight': 1}

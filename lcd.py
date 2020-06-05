@@ -97,7 +97,6 @@ else:
 
 # Create the shared queue and launch process_thread
 task_queue = Queue()
-
 task_queue.put({'action': 'test'})
 
 
@@ -121,10 +120,9 @@ LCD_BACKLIGHT = 0x08  # On
 ENABLE = 0b00000100  # Enable bit
 
 # Timing constants
-# E_PULSE = 0.0005
-# E_DELAY = 0.0005
-E_PULSE = 0.002
-E_DELAY = 0.002
+E_PULSE = 0.0005
+E_DELAY = 0.0005
+
 
 
 # define the hardware thread
@@ -172,18 +170,12 @@ def process_thread(inbound_queue):
             lcd_string(lcd_state['msg']['line1'], 1)
             lcd_string(lcd_state['msg']['line2'], 2)
             lcd_string(lcd_state['msg']['line3'], 3)
-            # lcd_string("123456789-abcdefghij", 4)
             lcd_string(lcd_state['msg']['line4'], 4)
 
             logging.info(f"Line 1: '{lcd_state['msg']['line1']}'")
             logging.info(f"Line 2: '{lcd_state['msg']['line2']}'")
             logging.info(f"Line 3: '{lcd_state['msg']['line3']}'")
             logging.info(f"Line 4: '{lcd_state['msg']['line4']}'")
-
-            # lcd_string("Test 1", 1)
-            # lcd_string("Test 2", 2)
-            # lcd_string("Test 3", 3)
-            # lcd_string("TEST 4", 4)
 
         logging.info("Thread - message processed\n\n")
 
@@ -195,19 +187,6 @@ logging.info("Creating thread")
 
 x = threading.Thread(target=process_thread, args=(task_queue,))
 x.start()
-
-# task_queue.put({'action': 'Initialise'})
-# task_queue.put({'action': 'display',
-#                 'data': {'msg': '123456789-abcdefghij',
-#                          'line': 1}}
-#                )
-#
-# task_queue.put({'action': 'display',
-#                 'data': {'msg': '#### TEST ####',
-#                          'line': 2}}
-#                )
-#
-# task_queue.put({'action': 'quit'})
 
 
 logging.info("running the app")

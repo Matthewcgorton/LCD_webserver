@@ -18,10 +18,10 @@ manager = Manager()
 # Global variables that represents the current state of the hardware
 # ##################################################
 
-lcd_state = {'msg': {'line1': "1 default msg line 1",
-                     'line2': "2 default msg line 2",
-                     'line3': "3 default msg line 3",
-                     'line4': "4 default msg line 4"
+lcd_state = {'msg': {'line1': "",
+                     'line2': "",
+                     'line3': "",
+                     'line4': ""
                      },
              'backlight': 1}
 
@@ -43,14 +43,15 @@ def create_app(config_name, outbound_queue):
     bootstrap.init_app(app)
 
     from .main import main as main_blueprint
-    from .main.lcd_hardware import init_lcd
+    # from .main.lcd_hardware import init_lcd
 
-
-    lcd_initialized = init_lcd(app.config['LOCAL_HARDWARE'])
+    # lcd_initialized = init_lcd(app.config['LOCAL_HARDWARE'])
 
     app.register_blueprint(main_blueprint)
 
     print("registering app from /app/__init__.py")
+
+    task_queue.put({'action': 'initiatize'})
 
     # main_blueprint.lcd_string("adsa", 2)
     return app
