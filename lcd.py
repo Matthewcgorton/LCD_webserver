@@ -5,7 +5,9 @@ import logging
 import threading
 from queue import Queue
 
-from app import create_app, lcd_state
+from app import create_app, lcd_state, db
+from app.models import Measurement
+from flask_migrate import Migrate
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
@@ -183,20 +185,21 @@ def process_thread(inbound_queue):
 
 
 logging.info("Creating thread")
-
-
 x = threading.Thread(target=process_thread, args=(task_queue,))
 x.start()
 
 
-logging.info("running the app")
+logging.info("launching the app")
 app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
+migrate = Migrate(app, db)
+
+logging.info("running the app")
 
 
 # app.run()
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
+    return dict(db=db, measurements=Measurements)
 
 
 logging.info("finished startup")
