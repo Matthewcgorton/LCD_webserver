@@ -99,7 +99,7 @@ else:
 
 # Create the shared queue and launch process_thread
 task_queue = Queue()
-task_queue.put({'action': 'test'})
+task_queue.put({'action': 'initialize'})
 
 
 
@@ -135,16 +135,16 @@ def process_thread(inbound_queue):
         task = inbound_queue.get()
         print(f"Thread - processing message: {task}")
 
-        action = task.get('action', 'unknown')
+        action = task.get('action', 'unknown').lower()
 
         print(f"Task action: '{action}'")
 
-        if action == 'Initialise':
+        if action == 'initialize':
             # Initialise display
             print("Initializing local hardware")
 
-            lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-            lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+            lcd_byte(0x33, LCD_CMD)  # 110011 Initialize
+            lcd_byte(0x32, LCD_CMD)  # 110010 Initialize
             lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
             lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
             lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
