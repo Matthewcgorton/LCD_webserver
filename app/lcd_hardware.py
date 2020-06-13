@@ -125,8 +125,10 @@ class LCD_Hardware():
 
         def lcd_get_lines(self):
             lines = []
-            for i in range(4):
+            for i in range(1, 4):
                 lines.append(self.lcd_get_line(i))
+            print(f"Lines: {lines}")
+
             return lines
 
         def lcd_clear(self):
