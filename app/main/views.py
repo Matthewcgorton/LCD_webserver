@@ -25,7 +25,7 @@ from .. import lcd_state
 
 @main.route('/')
 def index():
-    lcd_hardware.post_msg_to_queue({'action': "test"})
+    lcd_screen.post_msg_to_queue({'action': "test"})
     return render_template('index.html')
 
 
@@ -39,7 +39,7 @@ def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
     print("Clearing message")
-    lcd_hardware.post_msg_to_queue({'action': "redisplay"})
+    lcd_screen.post_msg_to_queue({'action': "redisplay"})
     flash('LCD clear message sent...')
 
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
@@ -66,7 +66,7 @@ def lcd_set_message():
             # lcd_string(lcd_state['msg']['line3'], 3)
             # lcd_string(lcd_state['msg']['line4'], 4)
 
-            lcd_hardware.post_msg_to_queue({'action': "redisplay"})
+            lcd_screen.post_msg_to_queue({'action': "redisplay"})
             flash('New message sent to LCD...')
 
             print("redirecting to GET display resource...")
