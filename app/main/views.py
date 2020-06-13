@@ -83,8 +83,8 @@ def lcd_set_message():
         form = lcd_set_form()
 
         print("Displaying form for user data entry`...")
-        form.line1.data = lcd_screen.lcd_state['msg']['line1']
-        form.line2.data = lcd_screen.lcd_state['msg']['line2']
-        form.line3.data = lcd_screen.lcd_state['msg']['line3']
-        form.line4.data = lcd_screen.lcd_state['msg']['line4']
+        form.line1.data = lcd_screen.lcd_get_line(1)
+        form.line2.data = lcd_screen.lcd_get_line(2)
+        form.line3.data = lcd_screen.lcd_get_line(3)
+        form.line4.data = lcd_screen.lcd_get_line(4)
         return render_template('lcd_set.html', form=form)
