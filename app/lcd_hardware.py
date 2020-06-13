@@ -113,7 +113,7 @@ class LCD_Hardware():
             print("Initialized\n")
 
         def post_msg_to_queue(self, action):
-
+            self.lcd_state['msg']['line2'] = "test"
             print(f"workign with LCD: {action}")
             print(f"LCD {self.lcd_state}")
             if action == 'initialize':
