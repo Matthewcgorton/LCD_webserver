@@ -115,22 +115,22 @@ class LCD_Hardware():
 
         def post_msg_to_queue(self, action):
             self.lcd_state['msg']['line2'] = "test"
-            print(f"workign with LCD: {action}")
+            print(f"workign with LCD: {action['action']}")
             print(f"LCD {self.lcd_state}")
-            if action == 'initialize':
+            if action['action'] == 'initialize':
                 print("FAIL NOP :: Initialized\n")
 
-            if action == 'display':
+            if action['action'] == 'display':
                 # data = task.get('data', {'msg': '', 'line': 0})
                 # msg = data.get('msg', '')
                 # line = data.get('line', 0)
 
                 self.lcd_string(self.lcd_state['msg'])
 
-            if action == 'test':
+            if action['action'] == 'test':
                 print("test was called")
 
-            if action == 'redisplay':
+            if action['action'] == 'redisplay':
 
                 # self.lcd_string(self.lcd_state['msg']['line1'], 1)
                 lcd_string("test", 1)
