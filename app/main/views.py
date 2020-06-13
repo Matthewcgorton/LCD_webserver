@@ -33,7 +33,9 @@ def index():
 
 @main.route('/lcd/msg')
 def lcd_message():
-    return render_template('lcd.html', lines=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
+    return render_template('lcd.html',
+                           lines=lcd_screen.lcd_state['msg'],
+                           local_hardware=current_app.config['LOCAL_HARDWARE'])
 
 
 @main.route('/lcd/clear')
