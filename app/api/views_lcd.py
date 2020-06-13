@@ -14,12 +14,12 @@ logging.basicConfig(format=format, level=logging.INFO,
 from .. import lcd_state
 # from .. import lcd_state
 
-
-def post_msg_to_queue(msg):
-    global task_queue
-
-    logging.info(f"View - posting message: {msg}")
-    task_queue.put(msg)
+#
+# def post_msg_to_queue(msg):
+#     global task_queue
+#
+#     logging.info(f"View - posting message: {msg}")
+#     task_queue.put(msg)
 
 
 
@@ -51,7 +51,7 @@ def lcd_message():
 def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-    post_msg_to_queue({'action': "redisplay"})
+    lcd_screen.post_msg_to_queue({'action': "redisplay"})
 
     response = make_response({'status': 'success', 'msg': lcd_state['msg']})
     response.status_code = 200
