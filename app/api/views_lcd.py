@@ -3,7 +3,7 @@ from flask_httpauth import HTTPBasicAuth
 
 from .. import lcd_hardware
 
-from .. import lcd_state
+from .. import lcd_state, lcd_screen
 from . import api
 
 import logging
@@ -39,7 +39,7 @@ def lcd_message():
     if not request.accept_mimetypes.accept_json:
         return render_template('500.html'), 500
 
-    response = make_response({'status': 'success', 'msg': lcd_state['msg']})
+    response = make_response({'status': 'success', 'msg': lcd_screen.lcd_state['msg']})
     response.status_code = 200
     return response
     # return render_template('api-lcd.html', lines=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
@@ -49,8 +49,7 @@ def lcd_message():
 @auth.login_required
 def lcd_clear_message():
 
-    lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-    lcd_hardware.post_msg_to_queue({'action': "redisplay"})
+    lcd_screen.lcd_update()
 
     response = make_response({'status': 'success', 'msg': lcd_state['msg']})
     response.status_code = 200
@@ -68,23 +67,24 @@ def lcd_set_message():
     if 'msg' in post_data.keys():
 
         if 'line1' in post_data['msg'].keys():
-            lcd_state['msg']['line1'] = post_data['msg']['line1']
+            line1 = post_data['msg']['line1']
             lcd_update = True
 
         if 'line2' in post_data['msg'].keys():
-            lcd_state['msg']['line2'] = post_data['msg']['line2']
+            line2 = post_data['msg']['line2']
             lcd_update = True
 
         if 'line3' in post_data['msg'].keys():
-            lcd_state['msg']['line3'] = post_data['msg']['line3']
+            line3 = post_data['msg']['line3']
             lcd_update = True
 
         if 'line4' in post_data['msg'].keys():
-            lcd_state['msg']['line4'] = post_data['msg']['line4']
+            line4 = post_data['msg']['line4']
             lcd_update = True
 
     if lcd_update:
         lcd_hardware.post_msg_to_queue({'action': "redisplay"})
+        lcd_screen.lcd_update(line1, line2, line3, line4)
 
     response = make_response({'status': 'success', 'msg': "request queued", 'request_data': post_data})
     response.status_code = 200

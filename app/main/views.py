@@ -43,7 +43,6 @@ def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
     print(f"Clearing message {lcd_state['msg'] }")
-    # lcd_screen.post_msg_to_queue({'action': "redisplay"})
     lcd_screen.lcd_update()
 
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
