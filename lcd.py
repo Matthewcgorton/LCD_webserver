@@ -5,7 +5,9 @@ import logging
 import threading
 from queue import Queue
 
-from app import create_app, lcd_state
+from app import create_app, lcd_state, db
+from app.models import Measurement
+from flask_migrate import Migrate
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
@@ -83,7 +85,7 @@ else:
     logging.info("No Local hardware :: creating NOP functions")
 
     def init_lcd():
-        logging.info(f"NOP :: Enabling Local hardware")
+        logging.info("NOP :: Enabling Local hardware")
 
     def lcd_byte(bits, mode):
         logging.info(f"NOP :: write byte {bits}, {mode}")
@@ -97,7 +99,7 @@ else:
 
 # Create the shared queue and launch process_thread
 task_queue = Queue()
-task_queue.put({'action': 'test'})
+task_queue.put({'action': 'initialize'})
 
 
 
@@ -133,16 +135,16 @@ def process_thread(inbound_queue):
         task = inbound_queue.get()
         print(f"Thread - processing message: {task}")
 
-        action = task.get('action', 'unknown')
+        action = task.get('action', 'unknown').lower()
 
         print(f"Task action: '{action}'")
 
-        if action == 'Initialise':
+        if action == 'initialize':
             # Initialise display
             print("Initializing local hardware")
 
-            lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
-            lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+            lcd_byte(0x33, LCD_CMD)  # 110011 Initialize
+            lcd_byte(0x32, LCD_CMD)  # 110010 Initialize
             lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
             lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
             lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
@@ -183,20 +185,21 @@ def process_thread(inbound_queue):
 
 
 logging.info("Creating thread")
-
-
 x = threading.Thread(target=process_thread, args=(task_queue,))
 x.start()
 
 
-logging.info("running the app")
+logging.info("launching the app")
 app = create_app(os.getenv('FLASK_CONFIG)') or 'default', task_queue)
+migrate = Migrate(app, db)
+
+logging.info("running the app")
 
 
 # app.run()
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
+    return dict(db=db, measurements=Measurements)
 
 
 logging.info("finished startup")
