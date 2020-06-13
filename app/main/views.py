@@ -10,10 +10,10 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-from .. import lcd_state
+from .. import lcd_state, lcd_screen
 # from .. import lcd_state, task_queue
 
-from .. import lcd_screen
+# from .. import lcd_screen
 
 #
 # def post_msg_to_queue(msg):
@@ -40,7 +40,7 @@ def lcd_message():
 def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-    print("Clearing message")
+    print(f"Clearing message {lcd_state['msg'] }")
     lcd_screen.post_msg_to_queue({'action': "redisplay"})
     flash('LCD clear message sent...')
 
