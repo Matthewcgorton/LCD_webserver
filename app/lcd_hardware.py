@@ -121,9 +121,9 @@ class LCD_Hardware():
             lines = []
 
             for i in range(1, 4):
-                lines.add(self.lcd_get_line(i))
+                lines.append(self.lcd_get_line(i))
 
-            return lines)
+            return lines
 
 
 
