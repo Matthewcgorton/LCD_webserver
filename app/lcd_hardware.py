@@ -120,7 +120,8 @@ class LCD_Hardware():
                 return None
 
             line = line - 1
-            print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg'][line_names[line]]}''")
+            print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg'][line_names[line]]}'")
+            print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg']}'")
             return self.lcd_state['msg'][line_names[line]]
 
         def lcd_get_lines(self):
