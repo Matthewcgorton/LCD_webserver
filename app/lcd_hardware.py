@@ -91,6 +91,7 @@ class LCD_Hardware():
                 line_address = self.LCD_LINE_4
 
             logging.info(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
+            print(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
 
             self.lcd_byte(line_address, self.LCD_CMD)
             for i in range(self.LCD_WIDTH):
