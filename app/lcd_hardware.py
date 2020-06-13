@@ -120,11 +120,12 @@ class LCD_Hardware():
                 return None
 
             line = line - 1
+            print(f"line: {line}, name {line_names[line]}")
             return self.lcd_state['msg'].get(line_names[line], '')
 
         def lcd_get_lines(self):
             lines = []
-            for i in range(1, 4):
+            for i in range(4):
                 lines.append(self.lcd_get_line(i))
             return lines
 
