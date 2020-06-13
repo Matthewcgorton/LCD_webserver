@@ -3,7 +3,7 @@ from flask_httpauth import HTTPBasicAuth
 
 from ..models import Measurement, User, Location
 
-from .. import lcd_state, task_queue, db
+from .. import lcd_state, db
 from . import api
 
 import logging
@@ -31,13 +31,12 @@ auth = HTTPBasicAuth()
 def verify_password(user, password):
     print(f"User: {user}, Password: {password}")
     if user != '':
-        g.user = 1
-        return True
+        # g.user = 1
+        # return True
         user = User.query.filter_by(login_name=user).first()
         print(f"User: {user}")
         if not user:
             return False
-        print("sadfafd")
         g.user = user.id
         return True
     else:

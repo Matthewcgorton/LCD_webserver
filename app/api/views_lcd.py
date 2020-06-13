@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request, make_response
 from flask_httpauth import HTTPBasicAuth
 
-from .. import lcd_state, task_queue
+from .. import lcd_state
 from . import api
 
 import logging
@@ -10,7 +10,8 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-from .. import lcd_state, task_queue
+# from .. import lcd_state, task_queue
+from .. import lcd_state
 # from .. import lcd_state
 
 

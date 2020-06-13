@@ -27,10 +27,22 @@ class User(db.Model):
     created_by = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DateTime, nullable=False)
     measurements = db.relationship('Measurement', backref='user')
+    credentials = db.relationship('Credential', backref='user')
 
     def __repr__(self):
         return f"<Name {self.display_name}>"
 
+
+class Credentials(db.Model):
+    __tablename__ = "credentials"
+    id = db.Column(db.Integer, primary_key=True)
+    credential = db.Column(db.String, nullable=False)
+    created_by = db.Column(db.Integer, nullable=False)
+    created = db.Column(db.DateTime, nullable=False)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<Name {self.display_name}>"
 
 class Location(db.Model):
     __tablename__ = "locations"

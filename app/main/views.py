@@ -9,14 +9,16 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-from .. import lcd_state, task_queue
+from .. import lcd_state
+# from .. import lcd_state, task_queue
 
 
 def post_msg_to_queue(msg):
-    global task_queue
+    # global task_queue
 
     logging.info(f"View - posting message: {msg}")
-    task_queue.put(msg)
+    print(f"View - posting message: {msg}")
+    # task_queue.put(msg)
 
 
 
