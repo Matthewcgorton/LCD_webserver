@@ -13,6 +13,8 @@ logging.basicConfig(format=format, level=logging.INFO,
 from .. import lcd_state
 # from .. import lcd_state, task_queue
 
+from .. import lcd_screen
+
 #
 # def post_msg_to_queue(msg):
 #     # global task_queue
