@@ -90,8 +90,8 @@ class LCD_Hardware():
             if line == 4:
                 line_address = self.LCD_LINE_4
 
-            logging.info(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
-            print(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
+            # logging.info(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
+            # print(f"Updating LCD line '{line}' at '{line_address}' with text '{message}'")
 
             self.lcd_byte(line_address, self.LCD_CMD)
             for i in range(self.LCD_WIDTH):
@@ -120,15 +120,15 @@ class LCD_Hardware():
                 return None
 
             line = line - 1
-            print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg'][line_names[line]]}'")
-            print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg']}'")
+            # print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg'][line_names[line]]}'")
+            # print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg']}'")
             return self.lcd_state['msg'][line_names[line]]
 
         def lcd_get_lines(self):
             lines = []
             for i in range(4):
                 lines.append(self.lcd_get_line(i + 1))
-            print(f"Lines: {lines}")
+            # print(f"Lines: {lines}")
 
             return lines
 
@@ -163,8 +163,8 @@ class LCD_Hardware():
 
         def post_msg_to_queue(self, action):
             self.lcd_state['msg']['line2'] = "test"
-            print(f"workign with LCD: {action['action']}")
-            print(f"LCD {self.lcd_state}")
+            # print(f"workign with LCD: {action['action']}")
+            # print(f"LCD {self.lcd_state}")
             if action['action'] == 'initialize':
                 print("FAIL NOP :: Initialized\n")
 
