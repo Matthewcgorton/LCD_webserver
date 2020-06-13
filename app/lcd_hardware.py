@@ -113,11 +113,43 @@ class LCD_Hardware():
 
             print("Initialized\n")
 
-        def lcd_update(self, line1="", line2="", line3="", line4=""):
-            self.lcd_state['msg']['line1'] = line1
-            self.lcd_state['msg']['line2'] = line2
-            self.lcd_state['msg']['line3'] = line3
-            self.lcd_state['msg']['line4'] = line4
+
+        def lcd_get_line(self, line):
+            return self.lcd_state['msg'].get(line, '')
+
+        def lcd_get_lines(self):
+            lines = []
+
+            for i in range(1, 4):
+                lines.add(self.lcd_get_line(i))
+
+            return lines)
+
+
+
+        def lcd_clear(self):
+            self.lcd_state['msg']['line1'] = ""
+            self.lcd_state['msg']['line2'] = ""
+            self.lcd_state['msg']['line3'] = ""
+            self.lcd_state['msg']['line4'] = ""
+
+            self.lcd_string(self.lcd_state['msg']['line1'], 1)
+            self.lcd_string(self.lcd_state['msg']['line2'], 2)
+            self.lcd_string(self.lcd_state['msg']['line3'], 3)
+            self.lcd_string(self.lcd_state['msg']['line4'], 4)
+
+        def lcd_update(self, line1=None, line2=None, line3=None, line4=None):
+            if line1 is not None:
+                self.lcd_state['msg']['line1'] = line1
+
+            if line2 is not None:
+                self.lcd_state['msg']['line2'] = line2
+
+            if line3 is not None:
+                self.lcd_state['msg']['line3'] = line3
+
+            if Line4 is not None:
+                self.lcd_state['msg']['line4'] = line4
 
             self.lcd_string(self.lcd_state['msg']['line1'], 1)
             self.lcd_string(self.lcd_state['msg']['line2'], 2)

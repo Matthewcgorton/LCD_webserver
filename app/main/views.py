@@ -34,7 +34,7 @@ def index():
 @main.route('/lcd/msg')
 def lcd_message():
     return render_template('lcd.html',
-                           lines=lcd_screen.lcd_state['msg'],
+                           lines=lcd_screen.lcd_get_lines(),
                            local_hardware=current_app.config['LOCAL_HARDWARE'])
 
 
@@ -43,7 +43,7 @@ def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
     print(f"Clearing message {lcd_state['msg'] }")
-    lcd_screen.lcd_update()
+    lcd_screen.lcd_clear()
 
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
 
@@ -83,8 +83,8 @@ def lcd_set_message():
         form = lcd_set_form()
 
         print("Displaying form for user data entry`...")
-        form.line1.data = lcd_state['msg']['line1']
-        form.line2.data = lcd_state['msg']['line2']
-        form.line3.data = lcd_state['msg']['line3']
-        form.line4.data = lcd_state['msg']['line4']
+        form.line1.data = lcd_screen.lcd_state['msg']['line1']
+        form.line2.data = lcd_screen.lcd_state['msg']['line2']
+        form.line3.data = lcd_screen.lcd_state['msg']['line3']
+        form.line4.data = lcd_screen.lcd_state['msg']['line4']
         return render_template('lcd_set.html', form=form)
