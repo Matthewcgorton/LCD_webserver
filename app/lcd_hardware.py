@@ -114,7 +114,7 @@ class LCD_Hardware():
 
         def post_msg_to_queue(self, action):
 
-            print("workign with LCD")
+            print(f"workign with LCD: {action}")
             if action == 'initialize':
                 print("FAIL NOP :: Initialized\n")
 
