@@ -1,6 +1,8 @@
 from flask import render_template, session, redirect, url_for, current_app, request, make_response
 from flask_httpauth import HTTPBasicAuth
 
+from . import lcd_hardware
+
 from .. import lcd_state
 from . import api
 
@@ -10,9 +12,6 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-# from .. import lcd_state, task_queue
-from .. import lcd_state
-# from .. import lcd_state
 
 #
 # def post_msg_to_queue(msg):
@@ -22,8 +21,8 @@ from .. import lcd_state
 #     task_queue.put(msg)
 
 
-
 auth = HTTPBasicAuth()
+
 
 @auth.verify_password
 def verify_password(user, password):
@@ -51,7 +50,7 @@ def lcd_message():
 def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-    lcd_screen.post_msg_to_queue({'action': "redisplay"})
+    lcd_hardware.post_msg_to_queue({'action': "redisplay"})
 
     response = make_response({'status': 'success', 'msg': lcd_state['msg']})
     response.status_code = 200
@@ -85,7 +84,7 @@ def lcd_set_message():
             lcd_update = True
 
     if lcd_update:
-        post_msg_to_queue({'action': "redisplay"})
+        lcd_hardware.post_msg_to_queue({'action': "redisplay"})
 
     response = make_response({'status': 'success', 'msg': "request queued", 'request_data': post_data})
     response.status_code = 200
