@@ -113,19 +113,15 @@ class LCD_Hardware():
 
             print("Initialized\n")
 
-
         def lcd_get_line(self, line):
-            return self.lcd_state['msg'].get(line, '')
+            line_names = ['line1', 'line2', 'line3', 'line4', ]
+            return self.lcd_state['msg'].get(line_names[line], '')
 
         def lcd_get_lines(self):
             lines = []
-
             for i in range(1, 4):
                 lines.append(self.lcd_get_line(i))
-
             return lines
-
-
 
         def lcd_clear(self):
             self.lcd_state['msg']['line1'] = ""
