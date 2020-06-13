@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request, flash
 
 from . import main
-from . import lcd_hardware
+from .. import lcd_hardware
 from .forms import lcd_set_form
 
 import logging
