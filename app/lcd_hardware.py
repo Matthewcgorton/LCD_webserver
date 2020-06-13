@@ -115,7 +115,7 @@ class LCD_Hardware():
 
         def lcd_get_line(self, line):
             line_names = ['line1', 'line2', 'line3', 'line4', ]
-
+            print(f"line {line}")
             if line < 1 or line > 4:
                 return None
 
