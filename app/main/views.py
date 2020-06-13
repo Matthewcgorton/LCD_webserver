@@ -41,7 +41,8 @@ def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
     print(f"Clearing message {lcd_state['msg'] }")
-    lcd_screen.post_msg_to_queue({'action': "redisplay"})
+    # lcd_screen.post_msg_to_queue({'action': "redisplay"})
+    lcd_screen.lcd_set()
     flash('LCD clear message sent...')
 
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
@@ -58,17 +59,19 @@ def lcd_set_message():
 
         if form.validate():
             print("Processing submitted form data...")
-            lcd_state['msg']['line1'] = form.line1.data
-            lcd_state['msg']['line2'] = form.line2.data
-            lcd_state['msg']['line3'] = form.line3.data
-            lcd_state['msg']['line4'] = form.line4.data
+            lcd_screen.lcd_set(form.line1.data, form.line2.data, form.line3.data, form.line4.data)
+
+            # lcd_state['msg']['line1'] = form.line1.data
+            # lcd_state['msg']['line2'] = form.line2.data
+            # lcd_state['msg']['line3'] = form.line3.data
+            # lcd_state['msg']['line4'] = form.line4.data
 
             # lcd_string(lcd_state['msg']['line1'], 1)
             # lcd_string(lcd_state['msg']['line2'], 2)
             # lcd_string(lcd_state['msg']['line3'], 3)
             # lcd_string(lcd_state['msg']['line4'], 4)
 
-            lcd_screen.post_msg_to_queue({'action': "redisplay"})
+            # lcd_screen.post_msg_to_queue({'action': "redisplay"})
             flash('New message sent to LCD...')
 
             print("redirecting to GET display resource...")
