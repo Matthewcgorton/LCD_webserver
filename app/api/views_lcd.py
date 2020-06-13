@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request, make_response
 from flask_httpauth import HTTPBasicAuth
 
-from . import lcd_hardware
+from .. import lcd_hardware
 
 from .. import lcd_state
 from . import api
