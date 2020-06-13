@@ -144,7 +144,7 @@ class LCD_Hardware():
             if line3 is not None:
                 self.lcd_state['msg']['line3'] = line3
 
-            if Line4 is not None:
+            if line4 is not None:
                 self.lcd_state['msg']['line4'] = line4
 
             self.lcd_string(self.lcd_state['msg']['line1'], 1)
