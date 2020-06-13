@@ -59,7 +59,7 @@ def lcd_set_message():
 
         if form.validate():
             print("Processing submitted form data...")
-            lcd_screen.lcd_set(form.line1.data, form.line2.data, form.line3.data, form.line4.data)
+            lcd_screen.lcd_update(form.line1.data, form.line2.data, form.line3.data, form.line4.data)
 
             # lcd_state['msg']['line1'] = form.line1.data
             # lcd_state['msg']['line2'] = form.line2.data
