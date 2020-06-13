@@ -112,6 +112,19 @@ class LCD_Hardware():
             time.sleep(self.E_DELAY)
 
             print("Initialized\n")
+            
+
+        def lcd_set(self, line1="", line2="", line3="", line4=""):
+            self.lcd_state['msg']['line1'] = line1
+            self.lcd_state['msg']['line2'] = line2
+            self.lcd_state['msg']['line3'] = line3
+            self.lcd_state['msg']['line4'] = line4
+
+            self.lcd_string(self.lcd_state['msg']['line1'], 1)
+            self.lcd_string(self.lcd_state['msg']['line2'], 2)
+            self.lcd_string(self.lcd_state['msg']['line3'], 3)
+            self.lcd_string(self.lcd_state['msg']['line4'], 4)
+
 
         def post_msg_to_queue(self, action):
             self.lcd_state['msg']['line2'] = "test"
