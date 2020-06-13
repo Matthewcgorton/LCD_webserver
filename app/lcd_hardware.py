@@ -53,8 +53,8 @@ class LCD_Hardware():
             # mode = 1 for data
             #        0 for command
 
-            bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
-            bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
+            bits_high = mode | (bits & 0xF0) | self.LCD_BACKLIGHT
+            bits_low = mode | ((bits << 4) & 0xF0) | self.LCD_BACKLIGHT
 
             # High bits
             self.bus.write_byte(self.I2C_ADDR, bits_high)
