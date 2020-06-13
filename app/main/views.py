@@ -33,7 +33,7 @@ def index():
 
 @main.route('/lcd/msg')
 def lcd_message():
-    print(self.lcd_screen.lcd_get_lines())
+    print(lcd_screen.lcd_get_lines())
     return render_template('lcd.html',
                            lines=lcd_screen.lcd_get_lines(),
                            local_hardware=current_app.config['LOCAL_HARDWARE'])
