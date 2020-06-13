@@ -1,6 +1,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request, flash
 
 from . import main
+from . import lcd_hardware
 from .forms import lcd_set_form
 
 import logging
@@ -12,19 +13,19 @@ logging.basicConfig(format=format, level=logging.INFO,
 from .. import lcd_state
 # from .. import lcd_state, task_queue
 
-
-def post_msg_to_queue(msg):
-    # global task_queue
-
-    logging.info(f"View - posting message: {msg}")
-    print(f"View - posting message: {msg}")
-    # task_queue.put(msg)
+#
+# def post_msg_to_queue(msg):
+#     # global task_queue
+#
+#     logging.info(f"View - posting message: {msg}")
+#     print(f"View - posting message: {msg}")
+#     # task_queue.put(msg)
 
 
 
 @main.route('/')
 def index():
-    post_msg_to_queue({'action': "test"})
+    lcd_hardware.post_msg_to_queue({'action': "test"})
     return render_template('index.html')
 
 
@@ -37,8 +38,8 @@ def lcd_message():
 def lcd_clear_message():
 
     lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-
-    post_msg_to_queue({'action': "redisplay"})
+    print("Clearing message")
+    lcd_hardware.post_msg_to_queue({'action': "redisplay"})
     flash('LCD clear message sent...')
 
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
@@ -65,7 +66,7 @@ def lcd_set_message():
             # lcd_string(lcd_state['msg']['line3'], 3)
             # lcd_string(lcd_state['msg']['line4'], 4)
 
-            post_msg_to_queue({'action': "redisplay"})
+            lcd_hardware.post_msg_to_queue({'action': "redisplay"})
             flash('New message sent to LCD...')
 
             print("redirecting to GET display resource...")
