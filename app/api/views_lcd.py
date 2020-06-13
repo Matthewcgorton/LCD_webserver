@@ -39,7 +39,7 @@ def lcd_message():
     if not request.accept_mimetypes.accept_json:
         return render_template('500.html'), 500
 
-    response = make_response({'status': 'success', 'msg': lcd_screen.lcd_state['msg']})
+    response = make_response({'status': 'success', 'msg': lcd_screen.lcd_get_lines()})
     response.status_code = 200
     return response
     # return render_template('api-lcd.html', lines=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
@@ -49,7 +49,7 @@ def lcd_message():
 @auth.login_required
 def lcd_clear_message():
 
-    lcd_screen.lcd_update()
+    lcd_screen.lcd_clear()
 
     response = make_response({'status': 'success', 'msg': lcd_state['msg']})
     response.status_code = 200
