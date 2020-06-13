@@ -131,11 +131,11 @@ class LCD_Hardware():
 
             if action == 'redisplay':
 
-                # self.lcd_string(self.lcd_state['msg']['line1'], self.LCD_LINE_1)
-                self.lcd_string("test", self.LCD_LINE_1)
-                self.lcd_string(self.lcd_state['msg']['line2'], self.LCD_LINE_2)
-                self.lcd_string(self.lcd_state['msg']['line3'], self.LCD_LINE_3)
-                self.lcd_string(self.lcd_state['msg']['line4'], self.LCD_LINE_4)
+                # self.lcd_string(self.lcd_state['msg']['line1'], 1)
+                lcd_string("test", 1)
+                self.lcd_string(self.lcd_state['msg']['line2'], 2)
+                self.lcd_string(self.lcd_state['msg']['line3'], 3)
+                self.lcd_string(self.lcd_state['msg']['line4'], 4)
 
                 logging.info(f"Line 1: '{self.lcd_state['msg']['line1']}'")
                 logging.info(f"Line 2: '{self.lcd_state['msg']['line2']}'")
