@@ -49,6 +49,16 @@ def lcd_clear_message():
     return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
 
 
+@main.route('/lcd/reset')
+def lcd_reset():
+
+    print("initialized")
+    flash('LCD has been reset')
+    lcd_screen.lcd_reset()
+
+    return redirect(url_for('main.lcd_message'))
+
+
 @main.route('/lcd/set', methods=['GET', 'POST'])
 def lcd_set_message():
 

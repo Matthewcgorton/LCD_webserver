@@ -135,6 +135,9 @@ class LCD_Hardware():
         def lcd_string(self, message, line):
             logging.info(f"NOP :: write string '{message}' at line {line}")
 
+    def lcd_reset(self):
+        self.initialize_lcd()
+        return
 
     def lcd_get_line(self, line):
         line_names = ['line1', 'line2', 'line3', 'line4', ]
