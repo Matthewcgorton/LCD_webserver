@@ -5,7 +5,7 @@ import logging
 import threading
 from queue import Queue
 
-from app import create_app, lcd_state, db
+from app import create_app, db
 from app.models import Measurement
 from flask_migrate import Migrate
 

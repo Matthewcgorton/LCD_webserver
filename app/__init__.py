@@ -1,4 +1,5 @@
 import socket
+import os
 
 from flask import Flask, render_template, current_app
 from flask_bootstrap import Bootstrap
@@ -16,23 +17,16 @@ from config import config
 bootstrap = Bootstrap()
 manager = Manager()
 db = SQLAlchemy()
-lcd_screen = LCD_Hardware()
 
+local_hardware_os_setting = os.getenv('LOCAL_HARDWARE')
+if local_hardware_os_setting == "1":
+    local_hardware_flag = True
+else:
+    local_hardware_flag = False
 
-# ##################################################
-# Global variables that represents the current state of the hardware
-# ##################################################
+lcd_screen = LCD_Hardware(local_hardware=local_hardware_flag)
 
-lcd_state = {'msg': {'line1': "",
-                     'line2': "",
-                     'line3': "",
-                     'line4': ""
-                     },
-             'backlight': 1}
-
-lcd_initialized = False
-
-bus = None  # place holder for hardware bus, if it is present
+# bus = None  # place holder for hardware bus, if it is present
 
 
 def create_app(config_name):

@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, current_app, request, flash
+from flask import render_template, redirect, url_for, current_app, request, flash
 
 from . import main
 from .. import lcd_hardware
@@ -10,24 +10,11 @@ format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 
-from .. import lcd_state, lcd_screen
-# from .. import lcd_state, task_queue
-
-# from .. import lcd_screen
-
-#
-# def post_msg_to_queue(msg):
-#     # global task_queue
-#
-#     logging.info(f"View - posting message: {msg}")
-#     print(f"View - posting message: {msg}")
-#     # task_queue.put(msg)
-
+from .. import lcd_screen
 
 
 @main.route('/')
 def index():
-    # lcd_screen.post_msg_to_queue({'action': "test"})
     return render_template('index.html')
 
 
@@ -42,11 +29,11 @@ def lcd_message():
 @main.route('/lcd/clear')
 def lcd_clear_message():
 
-    lcd_state['msg'] = {'line1': '', 'line2': '', 'line3': '', 'line4': ''}
-    print(f"Clearing message {lcd_state['msg'] }")
+    print("Clearing message...")
     lcd_screen.lcd_clear()
 
-    return render_template('lcd.html', msg=lcd_state['msg'], local_hardware=current_app.config['LOCAL_HARDWARE'])
+    flash('LCD has been cleared')
+    return redirect(url_for('main.lcd_message'))
 
 
 @main.route('/lcd/reset')
@@ -72,7 +59,6 @@ def lcd_set_message():
             print("Processing submitted form data...")
             lcd_screen.lcd_update(form.line1.data, form.line2.data, form.line3.data, form.line4.data)
 
-            # lcd_screen.post_msg_to_queue({'action': "redisplay"})
             flash('New message sent to LCD...')
 
             print("redirecting to GET display resource...")
@@ -80,7 +66,7 @@ def lcd_set_message():
         else:
             return render_template('lcd_set.html', form=form, local_hardware=current_app.config['LOCAL_HARDWARE'])
 
-    else:  # was a GET message
+    else:  # was a GET request
         form = lcd_set_form()
 
         print("Displaying form for user data entry`...")
@@ -88,4 +74,5 @@ def lcd_set_message():
         form.line2.data = lcd_screen.lcd_get_line(2)
         form.line3.data = lcd_screen.lcd_get_line(3)
         form.line4.data = lcd_screen.lcd_get_line(4)
-        return render_template('lcd_set.html', form=form)
+
+        return render_template('lcd_set.html', form=form, local_hardware=current_app.config['LOCAL_HARDWARE'])

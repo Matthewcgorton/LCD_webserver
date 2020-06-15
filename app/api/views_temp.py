@@ -3,7 +3,8 @@ from flask_httpauth import HTTPBasicAuth
 
 from ..models import Measurement, User, Location
 
-from .. import lcd_state, db
+# from .. import lcd_state, db
+from .. import db
 from . import api
 
 import logging

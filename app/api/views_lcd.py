@@ -3,7 +3,8 @@ from flask_httpauth import HTTPBasicAuth
 
 from .. import lcd_hardware
 
-from .. import lcd_state, lcd_screen
+from .. import lcd_screen
+# from .. import lcd_state, lcd_screen
 from . import api
 
 import logging
@@ -51,7 +52,7 @@ def lcd_clear_message():
 
     lcd_screen.lcd_clear()
 
-    response = make_response({'status': 'success', 'msg': lcd_state['msg']})
+    response = make_response({'status': 'success', 'msg': lcd_screen.lcd_get_lines()})
     response.status_code = 200
     return response
 

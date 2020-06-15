@@ -24,11 +24,13 @@
         {{render_field(form.line3)}}
         {{render_field(form.line4)}}
       </ul>
-      {{ form.submit() }} <a href="/lcd/clear">Clear</a>
+      {{ form.submit() }} <a href="/lcd/clear"><button type="button" name="clear">Clear</button></a>
       {{ form.hidden_tag() }}
     </form>
 
-
+    {% if not local_hardware %}
+      <h4>Warning : Running in test mode, no local hardware configured</h4>
+    {% endif %}
 
 </div>
 {% endblock %}
