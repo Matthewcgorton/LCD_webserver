@@ -49,21 +49,26 @@ class LCD_Hardware():
             # mode = 1 for data
             #        0 for command
 
-            bits_high = mode | (bits & 0xF0) | self.LCD_BACKLIGHT
-            bits_low = mode | ((bits << 4) & 0xF0) | self.LCD_BACKLIGHT
+            try:
+                bits_high = mode | (bits & 0xF0) | self.LCD_BACKLIGHT
+                bits_low = mode | ((bits << 4) & 0xF0) | self.LCD_BACKLIGHT
 
-            # High bits
-            self.bus.write_byte(self.I2C_ADDR, bits_high)
-            self._lcd_toggle_enable(bits_high)
+                # High bits
+                self.bus.write_byte(self.I2C_ADDR, bits_high)
+                self._lcd_toggle_enable(bits_high)
 
-            # Low bits
-            self.bus.write_byte(self.I2C_ADDR, bits_low)
-            self._lcd_toggle_enable(bits_low)
+                # Low bits
+                self.bus.write_byte(self.I2C_ADDR, bits_low)
+                self._lcd_toggle_enable(bits_low)
+
+            except Exception:
+                self.lcd_initialized = False
+                logging.info("Failed :: Cannot write to device")
+                print("Failed :: Cannot write to device\n")
 
         else:
             logging.info(f"NOP :: write byte {bits}, {mode}")
             print(f"NOP :: write byte {bits}, {mode}")
-
 
     def _lcd_toggle_enable(self, bits):
         # Toggle enable
