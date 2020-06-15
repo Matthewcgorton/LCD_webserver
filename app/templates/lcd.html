@@ -5,18 +5,19 @@
 {% block page_content %}
 <div class="page_content">
     <h4>The current message is:</h4>
-    <pre>
-      <code>
-{% if lines %}
-  {{lines[0]}}
-  {{lines[1]}}
-  {{lines[2]}}
-  {{lines[3]}}
-{% else %}
-  No message currently set
-{% endif %}
-      </code>
-    </pre>
+
+{%- if lines -%}<pre><code>{{lines[0]}}
+{{lines[1]}}
+{{lines[2]}}
+{{lines[3]}}</code></pre>
+{%- else -%}
+<pre><code>
+
+No message currently set
+
+</code></pre>
+{%- endif -%}
+
 
   {% if not local_hardware %}
     <h4>Warning : Running in test mode, no local hardware configured</h4>

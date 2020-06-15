@@ -1,15 +1,19 @@
-import os
 import time
 import logging
-
 
 class LCD_Hardware():
 
     def __init__(self, bus_interface=1, I2C_ADDR=0x27, LCD_WIDTH=20, local_hardware=True):
         self.local_hardware = local_hardware
-        self.bus_interface = bus_interface
         self.I2C_ADDR = I2C_ADDR
         self.LCD_WIDTH = LCD_WIDTH
+        self.bus_interface = bus_interface
+        self.lcd_initialized = False
+
+        if self.local_hardware:
+            import smbus
+            self.bus = smbus.SMBus(self.bus_interface)
+
 
         self.lcd_state = {'msg': {'line1': "",
                                   'line2': "",
@@ -74,10 +78,52 @@ class LCD_Hardware():
         else:
             logging.info(f"NOP :: toggle bits {bits}")
 
+    def initialize_lcd(self, new_bus=False):
+        # Initialise display
+        if self.local_hardware:
+            print("Initializing local hardware")
+            logging.info("Enabling Local hardware")
+
+            try:
+                if new_bus:
+                    import smbus
+                    self.bus = smbus.SMBus(self.bus_interface)
+
+                self._lcd_byte(0x33, self.LCD_CMD)  # 110011 Initialize
+                self._lcd_byte(0x32, self.LCD_CMD)  # 110010 Initialize
+                self._lcd_byte(0x06, self.LCD_CMD)  # 000110 Cursor move direction
+                self._lcd_byte(0x0C, self.LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+                self._lcd_byte(0x28, self.LCD_CMD)  # 101000 Data length, number of lines, font size
+                self._lcd_byte(0x01, self.LCD_CMD)  # 000001 Clear display
+                time.sleep(self.E_DELAY)
+
+                self.lcd_initialized = True
+                logging.info("Initialized")
+                print("Initialized\n")
+
+            except Exception:
+                self.lcd_initialized = False
+                logging.info("Failed :: LCD Now Initialized")
+                print("Failed :: LCD Now Initialized\n")
+
+        else:
+            logging.info("NOP :: initialize")
+            print("NOP :: Initialized\n")
+
+    def lcd_reset(self):
+        if self.local_hardware:
+            self.initialize_lcd()
+            logging.info("reseting LCD")
+
+        else:
+            logging.info("NOP :: reseting LCD")
+
+        return
+
 
     def _lcd_string(self, message, line):
         # Send string to display
-        if self.local_hardware:
+        if self.local_hardware and self.lcd_initialized:
 
             message = message.ljust(self.LCD_WIDTH, " ")
 
@@ -105,39 +151,6 @@ class LCD_Hardware():
             logging.info(f"NOP :: write string '{message}' at line {line}")
 
 
-    def initialize_lcd(self):
-        # Initialise display
-        if self.local_hardware:
-            print("Initializing local hardware")
-            logging.info("Enabling Local hardware")
-
-            import smbus
-            self.bus = smbus.SMBus(self.bus_interface)
-
-            self._lcd_byte(0x33, self.LCD_CMD)  # 110011 Initialize
-            self._lcd_byte(0x32, self.LCD_CMD)  # 110010 Initialize
-            self._lcd_byte(0x06, self.LCD_CMD)  # 000110 Cursor move direction
-            self._lcd_byte(0x0C, self.LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
-            self._lcd_byte(0x28, self.LCD_CMD)  # 101000 Data length, number of lines, font size
-            self._lcd_byte(0x01, self.LCD_CMD)  # 000001 Clear display
-            time.sleep(self.E_DELAY)
-
-            logging.info("Initialized")
-            print("Initialized\n")
-
-        else:
-            logging.info("NOP :: initialize")
-            print("NOP :: Initialized\n")
-
-    def lcd_reset(self):
-        if self.local_hardware:
-            self.initialize_lcd()
-            logging.info("reseting LCD")
-
-        else:
-            logging.info("NOP :: reseting LCD")
-
-        return
 
     def lcd_get_line(self, line):
         line_names = ['line1', 'line2', 'line3', 'line4', ]
@@ -150,7 +163,6 @@ class LCD_Hardware():
         # print(f"line: {line}, name {line_names[line]}, value '{self.lcd_state['msg']}'")
         return self.lcd_state['msg'][line_names[line]]
 
-
     def lcd_get_lines(self):
         lines = []
         for i in range(4):
@@ -158,7 +170,6 @@ class LCD_Hardware():
         # print(f"Lines: {lines}")
 
         return lines
-
 
     def lcd_clear(self):
         self.lcd_state['msg']['line1'] = ""
@@ -173,55 +184,19 @@ class LCD_Hardware():
         self.lcd_state['msg']['line4'] = ""
         self._lcd_string(self.lcd_state['msg']['line4'], 4)
 
-
     def lcd_update(self, line1=None, line2=None, line3=None, line4=None):
-        if line1 is not None:
+        if line1 is not None and line1 != self.lcd_state['msg']['line1']:
             self.lcd_state['msg']['line1'] = line1
             self._lcd_string(self.lcd_state['msg']['line1'], 1)
 
-        if line2 is not None:
+        if line2 is not None and line2 != self.lcd_state['msg']['line2']:
             self.lcd_state['msg']['line2'] = line2
             self._lcd_string(self.lcd_state['msg']['line2'], 2)
 
-        if line3 is not None:
+        if line3 is not None and line3 != self.lcd_state['msg']['line3']:
             self.lcd_state['msg']['line3'] = line3
             self._lcd_string(self.lcd_state['msg']['line3'], 3)
 
-        if line4 is not None:
+        if line4 is not None and line4 != self.lcd_state['msg']['line4']:
             self.lcd_state['msg']['line4'] = line4
             self._lcd_string(self.lcd_state['msg']['line4'], 4)
-
-
-    def post_msg_to_queue(self, action):
-
-        FAIL
-        self.lcd_state['msg']['line2'] = "test"
-        # print(f"workign with LCD: {action['action']}")
-        # print(f"LCD {self.lcd_state}")
-        if action['action'] == 'initialize':
-            print("FAIL NOP :: Initialized\n")
-
-        if action['action'] == 'display':
-            # data = task.get('data', {'msg': '', 'line': 0})
-            # msg = data.get('msg', '')
-            # line = data.get('line', 0)
-
-            self._lcd_string(self.lcd_state['msg'])
-
-        if action['action'] == 'test':
-            print("test was called")
-
-        if action['action'] == 'redisplay':
-
-            self._lcd_string(self.lcd_state['msg']['line1'], 1)
-            # _lcd_string("test", 1)
-            self._lcd_string(self.lcd_state['msg']['line2'], 2)
-            self._lcd_string(self.lcd_state['msg']['line3'], 3)
-            self._lcd_string(self.lcd_state['msg']['line4'], 4)
-
-            logging.info(f"Line 1: '{self.lcd_state['msg']['line1']}'")
-            logging.info(f"Line 2: '{self.lcd_state['msg']['line2']}'")
-            logging.info(f"Line 3: '{self.lcd_state['msg']['line3']}'")
-            logging.info(f"Line 4: '{self.lcd_state['msg']['line4']}'")
-
-        logging.info("Thread - message processed\n\n")
